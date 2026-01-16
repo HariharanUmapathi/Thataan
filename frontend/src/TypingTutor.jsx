@@ -49,7 +49,7 @@ class TypingTutor extends Component {
 
     let userInput = e.target.value;
     this.setState({ level: userInput });
-    let fetchUrl = "/data/level_" + e.target.value + ".json";
+    let fetchUrl = `${import.meta.env.BASE_URL}/data/level_` + e.target.value + ".json";
     fetch(fetchUrl, {
       headers: {
         Accept: "application/json",
