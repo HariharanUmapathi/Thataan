@@ -4,7 +4,8 @@ import TypingTutor from "./TypingTutor";
 const MainTab = () => {
   return (
     <Routes>
-      <Route path="/Thattan" element={TypingTutor} />
+     
+      <Route path="/" element={TypingTutor} />
     </Routes>
   );
 };
