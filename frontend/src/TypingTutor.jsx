@@ -1,6 +1,8 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import KeyBoardv2 from "./KeyBoardv2";
 import "./TypingTutor.css";
+import FingerPositioning from "./Fingering.jsx";
+import ScoreBoard from "./Scoreboard.jsx";
 
 class TypingTutor extends Component {
   constructor() {
@@ -18,25 +20,16 @@ class TypingTutor extends Component {
     this.compareIndex = -1;
     this.practiseData = [];
     this.currentPractiseLine = 0;
+    this.customLayout = null;
   }
-
-  setUpKeymanInUserText() {
-    var kmw = require("./static/js/keyman/keymanweb");
-    window.addEventListener("load", function () {
-      kmw.init({ attachType: "manual" });
-      kmw.attachToControl(document.getElementById("userText"));
-
-      kmw.osk.hide();
-      kmw.addKeyboards({
-        id: "ekwtamil99uni", // The keyboard's unique identification code.
-        name: "Tamil99", // The keyboard's user-readable name.
-        language: {
-          id: "tam", // A three-letter code uniquely identifying the language.
-          name: "Tamil", // The language's name.
-        },
-        filename: require("./tamil99.js"),
-      }); // A valid path to the compiled *.js file representing the keyboard.
-    });
+  getKeystroketoCharacter(keyboardSequence) {}
+  getKeystrokeSequence(tamilText) {
+    if (this.customLayout != null)
+      return this.customLayout.getKeystrokeSequence(tamilText);
+    return "";
+  }
+  componentDidMount() {
+    this.customLayout = new Tamil99KeyboardLayout();
   }
 
   handleInputChangeUserTypedText(e) {
@@ -49,20 +42,21 @@ class TypingTutor extends Component {
 
     let userInput = e.target.value;
     this.setState({ level: userInput });
-    let fetchUrl = `${import.meta.env.BASE_URL}/data/level_` + e.target.value + ".json";
+    document.getElementById("userText").focus();
+    let fetchUrl =
+      `${import.meta.env.BASE_URL}/data/level_` + e.target.value + ".json";
     fetch(fetchUrl, {
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",
       },
     })
-      .then((response) => { 
-        return response.json() 
-      }
-        )
+      .then((response) => {
+        return response.json();
+      })
       .then((responseJson) => {
         this.practiseData = responseJson["exercises"];
-        console.log(this.practiseData)
+        console.log(this.practiseData);
         return this.practiseData;
       })
       .then((practiseData) =>
@@ -70,25 +64,31 @@ class TypingTutor extends Component {
           practiseText: practiseData[0],
           userTypedText: "",
           practiseTextHighlighted: this.greyOutString(practiseData[0]),
-        })
+        }),
       )
       .catch((error) => console.log(error));
   }
 
   handleOnKeyDown(e) {
+    if (this.state.level === "") {
+      alert("Choose a level");
+      document.getElementById("level-selector").focus();
+    }
+
     if (e.keyCode === 8) {
-      // condition to check if the input is backspace and prevent it
+      //condition to check if the input is backspace and prevent it
       e.preventDefault();
       return;
     }
     let userTypedTextInput = e.target.value;
+
     this.setState({ userTypedText: userTypedTextInput });
     let practiseText = this.state.practiseText;
     this.compareIndex = userTypedTextInput.length - 1;
     this.highlightTypedLetters(
       this.compareIndex,
       userTypedTextInput,
-      this.state.practiseText
+      this.state.practiseText,
     );
 
     if (this.isEndOfPractiseText(userTypedTextInput, this.state.practiseText)) {
@@ -97,7 +97,7 @@ class TypingTutor extends Component {
         practiseText: this.practiseData[this.currentPractiseLine],
         userTypedText: "",
         practiseTextHighlighted: this.greyOutString(
-          this.practiseData[this.currentPractiseLine]
+          this.practiseData[this.currentPractiseLine],
         ),
       });
       this.compareIndex = -1;
@@ -113,18 +113,21 @@ class TypingTutor extends Component {
   }
 
   greyOutString(stringToBeGreyed) {
-    let arrayOfGreyedCharacters = stringToBeGreyed
-      .split("")
-      .map((character) => {
-        return <span style={{ color: "grey" }}> {character} </span>;
-      });
-    return arrayOfGreyedCharacters;
+    if (stringToBeGreyed != null) {
+      let arrayOfGreyedCharacters = stringToBeGreyed
+        .split("")
+        .map((character) => {
+          return <span style={{ color: "grey" }}> {character} </span>;
+        });
+      return arrayOfGreyedCharacters;
+    }
+    return [];
   }
 
   highlightTypedLetters(compareIndex, userTypedText, practiseText) {
     let practiseCharactersArray = this.state.practiseTextHighlighted;
     practiseCharactersArray[compareIndex + 2] = (
-      <span style={{ color: "grey" }}>
+      <span style={{ color: "slateblue" }}>
         {" "}
         {this.state.practiseText[compareIndex + 2]}{" "}
       </span>
@@ -172,35 +175,48 @@ class TypingTutor extends Component {
   }
 
   render() {
+    let nextCharacter =
+      this.state.practiseText[this.compareIndex + 1] === " "
+        ? "<space>"
+        : this.state.practiseText[this.compareIndex + 1];
+    let nextSequence = this.getKeystrokeSequence(this.state.practiseText);
+    if (nextSequence != "") {
+      console.log(nextCharacter);
+    }
     return (
       <div id="typingTutor">
         <div className="lvwpr">
           <label> Level </label>
-          <select value={this.state.level} onChange={this.handleLevelChange}>
+          <select
+            id="level-selector"
+            value={this.state.level}
+            onChange={this.handleLevelChange}
+          >
             <option value="" disabled defaultValue>
-              {" "}
-              select a level to begin{" "}
+              select a level to begin
             </option>
             <option value="1"> level 1</option>
             <option value="2"> level 2</option>
             <option value="3"> level 3</option>
+            <option value="4">level 4</option>
           </select>
         </div>
-        <br />
-        <label> Practise Text: </label>
-
-        <br />
-
-        <div className="practiseTextUnrenderedDiv">
-          <div id="practiseTextUnrendered">
-            {this.state.practiseText[this.compareIndex + 1]}
-          </div>
-        </div>
-        <div className="practiseTextRenderedDiv">
-          <div id="practiseTextRendered">{this.state.practiseText}</div>
-        </div>
-
+        <ScoreBoard
+          userInput={this.state.leveluserTypedText}
+          practiseText={this.state.practiseText}
+        />
         <div id="userTextDiv">
+          <label> Practise Text: </label>
+          <div style={{ fontSize: "2rem" }}>
+            {this.state.practiseTextHighlighted}
+          </div>
+          <div className="practiseTextUnrenderedDiv">
+            <div id="practiseTextUnrendered">{nextCharacter}</div>
+          </div>
+          <div className="practiseTextRenderedDiv">
+            <div id="practiseTextRendered">{this.state.practiseText}</div>
+          </div>
+          <div>{}</div>
           <input
             placeholder="Type Here"
             id="userText"
@@ -210,12 +226,10 @@ class TypingTutor extends Component {
             onChange={this.handleInputChangeUserTypedText}
             onKeyDown={this.handleOnKeyDown}
           />
-          <br />
         </div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <FingerPositioning nextCharacter={nextCharacter} />
 
-        <br />
-        <br />
-        <div>
           <KeyBoardv2
             pressedKey={
               this.state.practiseText[this.state.userTypedText.length]

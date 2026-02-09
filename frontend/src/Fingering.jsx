@@ -39,7 +39,7 @@ function FingerPositioning(nextCharacter) {
             width: "200px",
             minWidth: "200px",
             position: "absolute",
-            left: "18px",
+            left: "10px",
           }}
         />
       </div>

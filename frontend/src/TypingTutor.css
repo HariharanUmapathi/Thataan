@@ -1,5 +1,9 @@
-.practiseTextRenderedDiv, .practiseTextUnrenderedDiv {
-  text-align: center
+body {
+  margin: 0px;
+}
+.practiseTextRenderedDiv,
+.practiseTextUnrenderedDiv {
+  text-align: center;
 }
 #practiseTextRendered {
   margin: auto;
@@ -26,6 +30,6 @@
 
 #typingTutor {
   margin: auto;
-  width: 100%;
+  width: calc(100% - 20px);
   padding: 10px;
 }

@@ -41,7 +41,7 @@ class Tamil99KeyboardLayout {
 
             // ===== Consonant + அ (explicit) =====
             //Note: These are the same as above but with explicit 'a' - using shorter form
-            'க': 'ha', 'ப': 'ja',  //etc. - but 'h' is preferred
+            //'க': 'ha', 'ப': 'ja',  //etc. - but 'h' is preferred
 
             //===== Consonant-Vowel Combinations with க =====
             'கா': 'hq', 'கி': 'hs', 'கீ': 'hw', 'கு': 'hd', 'கூ': 'he',
@@ -198,7 +198,8 @@ class Tamil99KeyboardLayout {
          * Generate keystroke sequence for consonant-vowel combination.
          * Returns None if not a valid combination.
          *
-         * Example: கா = hq, கி = hs, etc.
+         * Example: கா = hq, கி = hs, etc
+         * TODO: Untested function .
          * */
         let cons_key = this.CONSONANT_KEYS.get(consonant)
         let vowel_key = this.VOWEL_SIGN_KEYS.get(vowel_sign)
@@ -224,25 +225,20 @@ class Tamil99KeyboardLayout {
          */
         let sequence = [];
         let i = 0
-        console.log(tamil_text.length)
         while (i < tamil_text.length) {
 
-            let char = tamil_text[i]
-            console.log(i, char)
+            let char = tamil_text[i];
 
             if (char == ' ') {
                 sequence.push(['Space', false]);
                 i += 1;
-                console.log('space if')
-                continue;
-                // # Skip to next iteration after handling space
+                continue; // # Skip to next iteration after handling space
             }
             else if (i + 1 < tamil_text.length) {
                 // First, check for combined characters(consonant + vowel sign)
                 // This handles cases like "டு" which should be "od", not "o" + "^d"
                 let combined = char + tamil_text[i + 1]
                 if (Object.hasOwn(this.CHAR_TO_KEYSTROKES, combined)) {
-                    console.log("combined", combined)
                     //Found a combined character(e.g., "டு" = "od")
                     let key_seq = this.CHAR_TO_KEYSTROKES[combined]
                     key_seq.split("").forEach(element => {
@@ -275,33 +271,31 @@ class Tamil99KeyboardLayout {
                     sequence.push(['^', false])
                     if (key_seq.length > 1) {
                         let vowel_key = key_seq[1];
-                        let is_upper = /[A]/.test(vowel_key)
+                        let is_upper = /[A-Z]/.test(vowel_key)
                         sequence.push([vowel_key.toUpperCase(), is_upper])
-                    }
-                    else {
-                        //# Regular sequence: process each key
-                        key_seq.split("").forEach(element => {
-                            let is_upper = /[A]/.test(element);
-                            sequence.push([element, is_upper])
-
-                        }
-                        )
-                        i += 1;
                     }
                 }
                 else {
-                    // Fallback for unmapped characters
-                    if (/[A-Za-z]/.test(char)) {
-                        sequence.push([char.toUpperCase(), /[A]/.test(char)])
-                    } else {
-                        sequence.push([char, false])
+                    //# Regular sequence: process each key
+                    key_seq.split("").forEach(element => {
+                        let is_upper = /[A-Z]/.test(element);
+                        sequence.push([element.toUpperCase(), is_upper])
                     }
-                    i += 1;
+                    )
                 }
+                i += 1;
             }
-
-
+            else {
+                // Fallback for unmapped characters
+                if (/[A-Za-z]/.test(char)) {
+                    sequence.push([char.toUpperCase(), /[A-Z]/.test(char)])
+                } else {
+                    sequence.push([char, false])
+                }
+                i += 1;
+            }
         }
+        //While loop end 
         return sequence
     }
 }   

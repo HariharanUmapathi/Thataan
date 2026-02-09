@@ -61,7 +61,7 @@ function getKeyIdAndLayer(inputLetter, language) {
 
 function removeHighlight(keyIdToRemoveHightlight) {
   let elementToReset = window.document.getElementsByClassName(
-    keyIdToRemoveHightlight
+    keyIdToRemoveHightlight,
   );
   let elementsArray = Array.from(elementToReset); // make array out of html collection
   elementsArray.map((element) => {
@@ -99,7 +99,7 @@ class KeyBoardv2 extends Component {
 
     const { keyId, layerId } = getKeyIdAndLayer(
       nextProps.pressedKey,
-      currentKeyboard
+      currentKeyboard,
     );
 
     return {
@@ -220,257 +220,260 @@ class KeyBoardv2 extends Component {
     });
 
     return (
-      <div id="keyboard">
-        <ul className="cf">
-          <li>
-            <a className="key c27 fn">
-              <span id="esc">esc</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c112 fn">
-              <span>F1</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c113 fn">
-              <span>F2</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c114 fn">
-              <span>F3</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c115 fn">
-              <span>F4</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c116 fn">
-              <span>F5</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c117 fn">
-              <span>F6</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c118 fn">
-              <span>F7</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c119 fn">
-              <span>F8</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c120 fn">
-              <span>F9</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c121 fn">
-              <span>F10</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c122 fn">
-              <span>F11</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c123 fn">
-              <span>F12</span>
-            </a>
-          </li>
-          <li>
-            <a className="key fn">
-              <span>Eject</span>
-            </a>
-          </li>
-        </ul>
-        <ul className="cf" id="numbers">
-          <li>
-            <a className="key c192">
-              <b>~</b>
-              <span>`</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c49">
-              <b>!</b>
-              <span>1</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c50">
-              <b>@</b>
-              <span>2</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c51">
-              <b>#</b>
-              <span>3</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c52">
-              <b>$</b>
-              <span>4</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c53">
-              <b>%</b>
-              <span>5</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c54">
-              <b>^</b>
-              <span>6</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c55">
-              <b>&amp;</b>
-              <span>7</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c56">
-              <b>*</b>
-              <span>8</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c57">
-              <b>(</b>
-              <span>9</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c48">
-              <b>)</b>
-              <span>0</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c189 alt">
-              <b>_</b>
-              <span>-</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c187">
-              <b>+</b>
-              <span>=</span>
-            </a>
-          </li>
-          <li>
-            <a className="key c46" id="delete">
-              <span>Delete</span>
-            </a>
-          </li>
-        </ul>
-        <ul className="cf" id="qwerty">
-          <li>
-            <a className="key c9" id="tab">
-              <span>tab</span>
-            </a>
-          </li>
-          {renderedQwertyKeys}
-          <li>
-            <a className="key c220">
-              <b>|</b>
-              <span>\</span>
-            </a>
-          </li>
-        </ul>
-        <ul className="cf" id="asdfg">
-          <li>
-            <a className="key c20 alt" id="caps">
-              <b></b>
-              <span>caps lock</span>
-            </a>
-          </li>
-          {renderedAsdfgKeys}
-          <li>
-            <a className="key c13 alt" id="enter">
-              <span>return</span>
-            </a>
-          </li>
-        </ul>
-        <ul className="cf" id="zxcvb">
-          <li>
-            <a className="key c16 shiftleft">
-              <span>Shift</span>
-            </a>
-          </li>
-          {renderedZxcvbKeys}
-          <li>
-            <a className="key c16 shiftright">
-              <span>Shift</span>
-            </a>
-          </li>
-        </ul>
-        <ul className="cf" id="bottomrow">
-          <li>
-            <a className="key c17 ctrl" id="Ctrl">
-              <span>Ctrl</span>
-            </a>
-          </li>
-          <li>
-            <a className="key mjt" id="mjtleft">
-              <span>mjt</span>
-            </a>
-          </li>
-          <li>
-            <a className="key AltKey" id="AltKeyleft">
-              <span>Alt</span>
-            </a>
-          </li>
-          <li className="">
-            <a className="key spacebar c32" id="spacebar">
-              space
-            </a>
-          </li>
-          <li>
-            <a className="key AltKey" id="AltKeyright">
-              <span>Alt</span>
-            </a>
-          </li>
-          <li>
-            <a className="key ctrl" id="CtrlKeyright">
-              <span>Ctrl</span>
-            </a>
-          </li>
-          <ol className="cf">
+      <div id="keyboard-container">
+        <div id="keyboard">
+          <ul className="cf">
             <li>
-              <a className="key c37" id="left">
-                <span></span>
+              <a className="key c27 fn">
+                <span id="esc">esc</span>
               </a>
             </li>
             <li>
-              <a className="key c38" id="up">
-                <span></span>
-              </a>
-              <a className="key c40" id="down">
-                <span></span>
+              <a className="key c112 fn">
+                <span>F1</span>
               </a>
             </li>
             <li>
-              <a className="key c39" id="right">
-                <span></span>
+              <a className="key c113 fn">
+                <span>F2</span>
               </a>
             </li>
-          </ol>
-        </ul>
+            <li>
+              <a className="key c114 fn">
+                <span>F3</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c115 fn">
+                <span>F4</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c116 fn">
+                <span>F5</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c117 fn">
+                <span>F6</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c118 fn">
+                <span>F7</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c119 fn">
+                <span>F8</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c120 fn">
+                <span>F9</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c121 fn">
+                <span>F10</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c122 fn">
+                <span>F11</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c123 fn">
+                <span>F12</span>
+              </a>
+            </li>
+            <li>
+              <a className="key fn">
+                <span>Eject</span>
+              </a>
+            </li>
+          </ul>
+          <ul className="cf" id="numbers">
+            <li>
+              <a className="key c192">
+                <b>~</b>
+                <span>`</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c49">
+                <b>!</b>
+                <span>1</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c50">
+                <b>@</b>
+                <span>2</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c51">
+                <b>#</b>
+                <span>3</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c52">
+                <b>$</b>
+                <span>4</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c53">
+                <b>%</b>
+                <span>5</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c54">
+                <b>^</b>
+                <span>6</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c55">
+                <b>&amp;</b>
+                <span>7</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c56">
+                <b>*</b>
+                <span>8</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c57">
+                <b>(</b>
+                <span>9</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c48">
+                <b>)</b>
+                <span>0</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c189 alt">
+                <b>_</b>
+                <span>-</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c187">
+                <b>+</b>
+                <span>=</span>
+              </a>
+            </li>
+            <li>
+              <a className="key c46" id="delete">
+                <span>Delete</span>
+              </a>
+            </li>
+          </ul>
+          <ul className="cf" id="qwerty">
+            <li>
+              <a className="key c9" id="tab">
+                <span>tab</span>
+              </a>
+            </li>
+            {renderedQwertyKeys}
+            <li>
+              <a className="key c220">
+                <b>|</b>
+                <span>\</span>
+              </a>
+            </li>
+          </ul>
+          <ul className="cf" id="asdfg">
+            <li>
+              <a className="key c20 alt" id="caps">
+                <b></b>
+                <span>caps lock</span>
+              </a>
+            </li>
+            {renderedAsdfgKeys}
+            <li>
+              <a className="key c13 alt" id="enter">
+                <span>return</span>
+              </a>
+            </li>
+          </ul>
+          <ul className="cf" id="zxcvb">
+            <li>
+              <a className="key c16 shiftleft">
+                <span>Shift</span>
+              </a>
+            </li>
+            {renderedZxcvbKeys}
+            <li>
+              <a className="key c16 shiftright">
+                <span>Shift</span>
+              </a>
+            </li>
+          </ul>
+          <ul className="cf" id="bottomrow">
+            <li>
+              <a className="key c17 ctrl" id="Ctrl">
+                <span>Ctrl</span>
+              </a>
+            </li>
+            <li>
+              <a className="key mjt" id="mjtleft">
+                <span>mjt</span>
+              </a>
+            </li>
+            <li>
+              <a className="key AltKey" id="AltKeyleft">
+                <span>Alt</span>
+              </a>
+            </li>
+            <li className="">
+              <a className="key spacebar c32" id="spacebar">
+                space
+              </a>
+            </li>
+            <li>
+              <a className="key AltKey" id="AltKeyright">
+                <span>Alt</span>
+              </a>
+            </li>
+            <li>
+              <a className="key ctrl" id="CtrlKeyright">
+                <span>Ctrl</span>
+              </a>
+            </li>
+            <ol className="cf">
+              <li>
+                <a className="key c37" id="left">
+                  <span></span>
+                </a>
+              </li>
+              <li>
+                <a className="key c38" id="up">
+                  <span></span>
+                </a>
+                <a className="key c40" id="down">
+                  <span></span>
+                </a>
+              </li>
+              <li>
+                <a className="key c39" id="right">
+                  <span></span>
+                </a>
+              </li>
+            </ol>
+          </ul>
+          <div>{}</div>
+        </div>
       </div>
     );
   }
